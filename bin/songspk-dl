@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+use Adil\SongsPk\App;
+
+require(__DIR__ . '/../src/App.php');
+
+try {
+	$app = new App();
+	$app->run();
+} catch (Exception $e) {
+	echo $e->getMessage();
+}

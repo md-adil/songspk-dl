@@ -1,8 +1,21 @@
 {
+	"name": "md-adil/songspk-dl",
+	"description": "Download songs pk songs with one command",
+	"version": "1.0.0-dev",
+	"keywords": [ "Songs", "bollywood", "indian songs", "mp3", "songs pk" ],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Md Adil",
+			"email": "md-adil@live.com"
+		}
+	],
     "require": {
         "symfony/dom-crawler": "^4.0",
         "symfony/css-selector": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
         "symfony/console": "^4.0"
-    }
+    },
+    
+	"bin": ["bin/songspk-dl"]
 }

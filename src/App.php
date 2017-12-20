@@ -1,4 +1,6 @@
 <?php
+namespace Adil\SongsPk;
+
 require(__DIR__ . '/../vendor/autoload.php');
 
 use GuzzleHttp\Client;
@@ -201,11 +203,4 @@ class App {
 			$this->getListContent($this->makeLink($page));
 		}
 	}
-}
-
-try {
-	$app = new App();
-	$app->run();
-} catch (Exception $e) {
-	echo $e->getMessage();
 }
