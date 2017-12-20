@@ -1,8 +1,6 @@
 <?php
 namespace Adil\SongsPk;
 
-require(__DIR__ . '/../vendor/autoload.php');
-
 use GuzzleHttp\Client;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
