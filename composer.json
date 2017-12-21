@@ -10,6 +10,11 @@
 			"email": "md-adil@live.com"
 		}
 	],
+	"autoload": {
+		"psr-4": {
+			"Adil\\SongsPk\\" : "src/"
+		}
+	},
     "require": {
         "symfony/dom-crawler": "^4.0",
         "symfony/css-selector": "^4.0",
