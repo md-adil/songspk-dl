@@ -220,7 +220,7 @@ class App
         if (strpos($page, ',')) {
             return explode(',', $page);
         }
-        return $page;
+        return [$page];
     }
 
     public function run()

@@ -1,7 +1,7 @@
 {
 	"name": "md-adil/songspk-dl",
 	"description": "Download songs pk songs with one command",
-	"version": "1.0.0-dev",
+	"version": "1.0.1-dev",
 	"keywords": [ "Songs", "bollywood", "indian songs", "mp3", "songs pk" ],
 	"license": "MIT",
 	"authors": [
