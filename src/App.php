@@ -1,7 +1,9 @@
 <?php
 namespace Adil\SongsPk;
 
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -11,8 +13,6 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\DomCrawler\Crawler;
-
-use Exception;
 
 class App
 {
@@ -72,6 +72,8 @@ class App
             $contents = new Crawler((string)$res->getBody());
             $this->info("Getting List -", $link);
             $this->parseList($contents);
+        } catch (ClientException $e) {
+            $this->error("URL seems not valid, Please get your desired url from songs.pk");
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
@@ -79,7 +81,7 @@ class App
 
     public function parseList(Crawler $crawler)
     {
-        $this->info("Parsing List");
+        $this->info("Parsing list...");
         $crawler->filter('figure')->each(function ($album) {
             $link = $album->filter('a');
             if ($link->count()) {
@@ -90,11 +92,13 @@ class App
 
     protected function getItemContent(string $link)
     {
-        $this->info("Getting Item:", $link);
+        $this->info("Getting item:", $link);
         try {
             $res = $this->client->get($link);
             $crawler = new Crawler((string)$res->getBody());
             $this->parseItem($crawler);
+        } catch (ClientException $e) {
+            $this->error("Album not found.");
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
@@ -102,7 +106,7 @@ class App
 
     public function parseItem(Crawler $crawler)
     {
-        $this->info("Parsing");
+        $this->info("Parsing item...");
         $d = $crawler->filter('.page-zip-wrap');
         if ($d->count()) {
             $this->downloadAlbum($crawler, $d);
@@ -163,20 +167,26 @@ class App
             $this->out->writeln("<warning>File already exists. Skipping.</>");
             return;
         }
-
+        
         $this->startProgress();
-        $this->client->request('GET', $link, [
-            'sink' => $filename,
-            'progress' => function ($tl, $dl, $ul, $ulFar) {
-                if (!$tl) {
-                    return;
+        try {
+            $this->client->request('GET', $link, [
+                'sink' => $filename,
+                'progress' => function ($tl, $dl, $ul, $ulFar) {
+                    if (!$tl) {
+                        return;
+                    }
+                    $this->progress->setProgress((int)(($dl * 25) / $tl));
+                    $this->progress->setMessage($this->humanFilesize($tl), 't');
+                    $this->progress->setMessage($this->humanFilesize($dl), 'd');
+                    $this->progress->setMessage(round(($dl * 100) / $tl, 2), 'p');
                 }
-                $this->progress->setProgress((int)(($dl * 25) / $tl));
-                $this->progress->setMessage($this->humanFilesize($tl), 't');
-                $this->progress->setMessage($this->humanFilesize($dl), 'd');
-                $this->progress->setMessage(round(($dl * 100) / $tl, 2), 'p');
-            }
-        ]);
+            ]);
+        } catch (ClientException $e) {
+            $this->error('Song not found. Skipping.');
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
+        }
         $this->progress->finish();
     }
 
