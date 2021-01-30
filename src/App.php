@@ -16,7 +16,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class App
 {
-    public $baseUrl = 'https://songs.pk';
+    public $baseUrl = 'https://songspk.mobi';
     protected $page = 0;
     protected $album = 0;
     protected $client;

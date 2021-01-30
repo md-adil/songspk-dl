@@ -20,7 +20,7 @@ or you can right click and create a new folder.
 #### Step 3 : Type the following command to install the package.
     composer require md-adil/songspk-dl dev-master
 
-#### Step 4 :  Following command will get all the songs from https://songs.pk/.  
+#### Step 4 :  Following command will get all the songs from https://songspk.mobi/.  
     ./vendor/bin/songspk-dl [argument] [--page]
     or in Windows
     vendor\bin\songspk-dl [argument] [--page]
